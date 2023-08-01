@@ -14,6 +14,10 @@ for (let i = 0; i < Array.from(menuLink).length; i++) {
     menuLink[i].onclick = function() {
         const menuSub = this.closest("li").querySelector("ul");
 
+        if (!menuSub) {
+            return;
+        }
+
         if (menuSub.className === "menu menu_sub") {
             clearActive();
             menuSub.className = "menu menu_sub menu_active";
