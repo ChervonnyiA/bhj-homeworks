@@ -17,14 +17,27 @@ class Game {
   }
 
   registerEvents() {
-    /*
-      TODO:
-      Написать обработчик события, который откликается
-      на каждый введённый символ.
-      В случае правильного ввода слова вызываем this.success()
-      При неправильном вводе символа - this.fail();
-      DOM-элемент текущего символа находится в свойстве this.currentSymbol.
-     */
+    addEventListener("keyup", (e) => {
+      if (e.key === this.currentSymbol.textContent) {
+        this.success();
+      } else {
+        this.fail();
+      }
+    });
+  }
+
+  timer(word) {
+    const time = document.querySelector(".status__timer");
+    time.textContent = String(word.length);
+    
+    const timer = setInterval(() => {
+      time.textContent -= 1;
+
+      if (time.textContent === "-1") {
+        clearInterval(timer);
+        this.fail();
+      }
+    }, 1000);
   }
 
   success() {
@@ -56,6 +69,7 @@ class Game {
     const word = this.getWord();
 
     this.renderWord(word);
+    this.timer(word);
   }
 
   getWord() {
