@@ -1,5 +1,6 @@
 class Game {
   constructor(container) {
+    this.timerInterval = 0;
     this.container = container;
     this.wordElement = container.querySelector('.word');
     this.winsElement = container.querySelector('.status__wins');
@@ -26,15 +27,19 @@ class Game {
     });
   }
 
+  clearTimerInterval() {
+    clearInterval(this.timerInterval);
+  }
+
   timer(word) {
     const time = document.querySelector(".status__timer");
     time.textContent = String(word.length);
-    
-    const timer = setInterval(() => {
+
+    this.timerInterval = setInterval(() => {
       time.textContent -= 1;
 
       if (time.textContent === "-1") {
-        clearInterval(timer);
+        this.clearTimerInterval();
         this.fail();
       }
     }, 1000);
@@ -54,6 +59,7 @@ class Game {
       alert('Победа!');
       this.reset();
     }
+    
     this.setNewWord();
   }
 
@@ -64,11 +70,13 @@ class Game {
     }
     this.setNewWord();
   }
-
+  
   setNewWord() {
     const word = this.getWord();
 
     this.renderWord(word);
+
+    this.clearTimerInterval()
     this.timer(word);
   }
 
